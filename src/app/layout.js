@@ -14,9 +14,16 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={cn(inter.className,'flex min-h-screen w-full flex-col bg-muted/40')}>
+      <body
+        className={cn(
+          inter.className,
+          "flex min-h-screen w-full flex-col bg-muted/40"
+        )}
+      >
         <Header />
-        {children}
+        <div className="py-3 h-[calc(100vh_-_5rem)] relative overflow-auto">
+          {children}
+        </div>
       </body>
     </html>
   );
