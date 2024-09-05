@@ -1,10 +1,54 @@
 import {create} from 'zustand';
+import { z } from 'zod';
+import { AssetListSchema, LifeListSchema, PersonalSchema } from '@/lib/schema';
 
-const useStepStore = create((set) => ({
-  currentStep: 1,
+const useStepStore = create((set,get) => ({
+  currentStep: 0,
+  formSchema: {0:PersonalSchema,1:AssetListSchema,2:LifeListSchema},
+  formData: {},
+  // Function to set form data for a specific step
+  setFormData: (step, field, value) => set((state) => ({
+    formData: {
+      [step]: {
+        ...state.formData[step],
+        [field]: value,
+      },
+    },
+  })),
+  setFormDatas: (step, formData) => set((state) => ({
+    formData: {
+      [step]: {...formData},
+    },
+  })),
   setStep: (step) => set({ currentStep: step }),
-  nextStep: () => set((state) => ({ currentStep: state.currentStep + 1 })),
-  prevStep: () => set((state) => ({ currentStep: state.currentStep - 1 })),
+  // Navigate to the next step if validation is successful
+  nextStep: () => {
+    const isValid = get().validateStep();
+    if (isValid) {
+      set((state) => ({ currentStep: state.currentStep + 1 }));
+      return true;
+    }
+    return false;
+  },
+    // Navigate to the previous step
+    prevStep: () => set((state) => ({ currentStep: state.currentStep - 1 })),
+     // Validation function to ensure all fields are filled
+  // Validate form data for the current step
+  validateStep: () => {
+    const { currentStep, formData, formSchema } = get();
+    try {
+        if (formSchema[currentStep]){
+            formSchema[currentStep].parse(formData[currentStep]);
+        }
+
+      return true; // Validation successful
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        alert(error.errors[0].message); // Show the first validation error
+      }
+      return false;
+    }
+  },
 }));
 
 export default useStepStore;
