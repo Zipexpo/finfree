@@ -40,6 +40,9 @@ import {
 import { ScrollArea } from "./ui/scroll-area";
 import { Checkbox } from "./ui/checkbox";
 import { Label } from "./ui/label";
+import { Description } from "@radix-ui/react-dialog";
+import Comboboxfree from "./ui/combofree";
+import { Plus, PlusCircle, PlusCircleIcon } from "lucide-react";
 export default function BalanceForm({
   prevStep,
   nextStep,
@@ -56,6 +59,7 @@ export default function BalanceForm({
   });
 
   function onSubmitAsset(data) {
+    console.log(data);
     // setFormDatas(1, data);
     // nextStep();
   }
@@ -68,18 +72,31 @@ export default function BalanceForm({
       <CardContent className="h-full relative flex-1">
         <ResizablePanelGroup direction="vertical">
           <ResizablePanel defaultSize={75}>
-            <ScrollArea className="h-full">
-              <Dialog>
-                <DialogTrigger>Add Asset</DialogTrigger>
-                <DialogContent>
-                  <AssertSingle
-                    title="Add new Asset"
-                    hint="Asset"
-                    onSubmit={onSubmitAsset}
-                  />
-                </DialogContent>
-              </Dialog>
-            </ScrollArea>
+            <ResizablePanelGroup direction="horizontal">
+              <ResizablePanel className="px-2 py-2" defaultSize={50}>
+                <h4>Assets ($)</h4>
+                <Dialog>
+                  <DialogTrigger>
+                    <Button>
+                      <Plus className="mr-2 h-4 w-4" /> Add
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <AssertSingle
+                      title="Add new Asset"
+                      hint="Asset"
+                      onSubmit={onSubmitAsset}
+                    />
+                  </DialogContent>
+                </Dialog>
+                <ScrollArea className="h-full"></ScrollArea>
+              </ResizablePanel>
+              <ResizableHandle withHandle />
+              <ResizablePanel className="px-2 py-2" defaultSize={50}>
+                <h4>Liabiliies ($)</h4>
+                <ScrollArea className="h-full"></ScrollArea>
+              </ResizablePanel>
+            </ResizablePanelGroup>
           </ResizablePanel>
           <ResizableHandle withHandle />
           <ResizablePanel defaultSize={75}></ResizablePanel>
@@ -89,7 +106,7 @@ export default function BalanceForm({
   );
 }
 
-function AssertSingle({ title, hint, onSubmit, formData }) {
+function AssertSingle({ title, description, hint, onSubmit, formData }) {
   const form = useForm({
     resolver: zodResolver(AssetSchema),
     defaultValues: formData || { isLiquid: false },
@@ -100,6 +117,7 @@ function AssertSingle({ title, hint, onSubmit, formData }) {
       <DialogHeader>
         <DialogTitle>{title}</DialogTitle>
       </DialogHeader>
+      <Description>{description}</Description>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -124,9 +142,14 @@ function AssertSingle({ title, hint, onSubmit, formData }) {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Category</FormLabel>
-                <FormControl>
-                  <Input {...field} />
-                </FormControl>
+                <Comboboxfree
+                  predefined={[
+                    { label: "Housing", value: "Housing" },
+                    { label: "Food", value: "Food" },
+                    { label: "Clothe", value: "Clothe" },
+                  ]}
+                  {...field}
+                />
                 <FormMessage />
               </FormItem>
             )}

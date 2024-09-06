@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/form";
 import { Label } from "./ui/label";
 import { useEffect } from "react";
+import Comboboxfree from "./ui/combofree";
 export default function PersonalInfo({
   prevStep,
   nextStep,
@@ -90,12 +91,20 @@ export default function PersonalInfo({
               render={({ field }) => (
                 <FormItem className="col-span-2">
                   <FormLabel>Occupation</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Your full name..." {...field} />
-                  </FormControl>
-                  {/* <FormDescription>
-                      This is your public display name.
-                    </FormDescription> */}
+                  <Comboboxfree
+                    className="relative flex items-center"
+                    predefined={[
+                      { label: "Teacher", value: "Teacher" },
+                      { label: "Engineer", value: "Engineer" },
+                      { label: "Student", value: "Student" },
+                      {
+                        label: "Financial officier",
+                        value: "Financial officier",
+                      },
+                      { label: "Business man", value: "Business man" },
+                    ]}
+                    {...field}
+                  />
                   <FormMessage />
                 </FormItem>
               )}
