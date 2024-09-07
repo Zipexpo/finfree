@@ -46,7 +46,12 @@ export const AssetSchema = _AssetSchema.required({
   asset_name: true,
   asset_amount: true,
 });
-export const AssetListSchema = z.array(AssetSchema);
+export const AssetListSchema = z.object({
+  assert: z.array(AssetSchema),
+  assertTotal: z.coerce.number(),
+  liability: z.array(AssetSchema),
+  liabilityTotal: z.coerce.number(),
+});
 
 export const _LifeSchema = z.object({
   name: z.string().min(1, "Required"),

@@ -94,14 +94,19 @@ export default function PersonalInfo({
                   <Comboboxfree
                     className="relative flex items-center"
                     predefined={[
-                      { label: "Teacher", value: "Teacher" },
-                      { label: "Engineer", value: "Engineer" },
-                      { label: "Student", value: "Student" },
                       {
-                        label: "Financial officier",
-                        value: "Financial officier",
+                        heading: "",
+                        member: [
+                          { label: "Teacher", value: "Teacher" },
+                          { label: "Engineer", value: "Engineer" },
+                          { label: "Student", value: "Student" },
+                          {
+                            label: "Financial officier",
+                            value: "Financial officier",
+                          },
+                          { label: "Business man", value: "Business man" },
+                        ],
                       },
-                      { label: "Business man", value: "Business man" },
                     ]}
                     {...field}
                   />

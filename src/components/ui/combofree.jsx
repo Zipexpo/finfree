@@ -20,20 +20,34 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { flatten } from "lodash";
 
+const emptydefined = [{ heading: null, member: [] }];
 const Comboboxfree = React.forwardRef(
-  ({ predefined = [], value, onChange, className, ...props }, ref) => {
-    const [inputValue, setInputValue] = React.useState(value);
+  (
+    { predefined = emptydefined, value, onChange, className, ...props },
+    ref
+  ) => {
+    const [inputValue, setInputValue] = React.useState(value ?? null);
     const [options, setOptions] = React.useState([...predefined]);
+    const optionsFlat = React.useMemo(
+      () => flatten(options.map((d) => d.member)),
+      [options]
+    );
     React.useEffect(() => {
       const value = (inputValue ?? "").trim();
       if (
         value !== "" &&
-        !predefined.find((option) => option.value === value)
+        !predefined.find((g) =>
+          g.member.find((option) => option.value === value)
+        )
       ) {
         setOptions((prevOptions) => [
           ...predefined,
-          { value: value, label: value, temp: true },
+          {
+            heading: "Custom",
+            member: [{ value: value, label: value, temp: true }],
+          },
         ]); // Add the custom value to the list if not present
       }
     }, [inputValue, predefined]);
@@ -61,7 +75,8 @@ const Comboboxfree = React.forwardRef(
               )}
             >
               {inputValue
-                ? options.find((option) => option.value === inputValue)?.label
+                ? optionsFlat.find((option) => option.value === inputValue)
+                    ?.label
                 : "Select option"}
               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
@@ -76,27 +91,29 @@ const Comboboxfree = React.forwardRef(
             />
             <CommandList>
               <CommandEmpty>No option found.</CommandEmpty>
-              <CommandGroup>
-                {options.map((option) => (
-                  <CommandItem
-                    value={option.label}
-                    key={option.value}
-                    onSelect={() => {
-                      handleSelect(option.value);
-                    }}
-                  >
-                    <Check
-                      className={cn(
-                        "mr-2 h-4 w-4",
-                        option.value === inputValue
-                          ? "opacity-100"
-                          : "opacity-0"
-                      )}
-                    />
-                    {option.label}
-                  </CommandItem>
-                ))}
-              </CommandGroup>
+              {options.map(({ heading, member }) => (
+                <CommandGroup key={heading} heading={heading}>
+                  {member.map((option) => (
+                    <CommandItem
+                      value={option.label}
+                      key={option.value}
+                      onSelect={() => {
+                        handleSelect(option.value);
+                      }}
+                    >
+                      <Check
+                        className={cn(
+                          "mr-2 h-4 w-4",
+                          option.value === inputValue
+                            ? "opacity-100"
+                            : "opacity-0"
+                        )}
+                      />
+                      {option.label}
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              ))}
             </CommandList>
           </Command>
         </PopoverContent>
