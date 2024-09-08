@@ -3,7 +3,7 @@ import React from "react";
 import "./globals.scss";
 import Header from "@/components/Header";
 import { cn } from "@/lib/utils";
-import { Toaster } from "@/components/ui/toaster"
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,7 +22,7 @@ export default function RootLayout({ children }) {
         )}
       >
         <Header />
-        <div className="py-3 h-[calc(100vh_-_5rem)] relative overflow-auto">
+        <div className="py-3 h-[calc(100vh_-_3.5rem)] relative overflow-auto">
           {children}
         </div>
         <Toaster />

@@ -53,25 +53,19 @@ export default function BalanceForm({
         <CardDescription>List your assert and liabiliies.</CardDescription>
       </CardHeader>
       <CardContent className="h-full relative flex-1">
-        <ResizablePanelGroup direction="vertical">
-          <ResizablePanel defaultSize={75}>
-            <ResizablePanelGroup direction="horizontal">
-              <ResizablePanel className="px-2 py-2" defaultSize={50}>
-                <AssertList
-                  control={formAsset.control}
-                  register={formAsset.register}
-                  onSubmit={onSubmitAsset}
-                />
-              </ResizablePanel>
-              <ResizableHandle withHandle />
-              <ResizablePanel className="px-2 py-2" defaultSize={50}>
-                <h4>Liabiliies ($)</h4>
-                <ScrollArea className="h-full"></ScrollArea>
-              </ResizablePanel>
-            </ResizablePanelGroup>
+        <ResizablePanelGroup direction="horizontal">
+          <ResizablePanel className="px-2 py-2" defaultSize={50}>
+            <AssertList
+              control={formAsset.control}
+              register={formAsset.register}
+              onSubmit={onSubmitAsset}
+            />
           </ResizablePanel>
           <ResizableHandle withHandle />
-          <ResizablePanel defaultSize={75}></ResizablePanel>
+          <ResizablePanel className="px-2 py-2" defaultSize={50}>
+            <h4>Liabiliies ($)</h4>
+            <ScrollArea className="h-full"></ScrollArea>
+          </ResizablePanel>
         </ResizablePanelGroup>
       </CardContent>
     </Card>

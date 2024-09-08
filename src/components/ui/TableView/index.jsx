@@ -107,7 +107,7 @@ export function TableView({
   });
 
   return (
-    <div className={cn("w-full", className)}>
+    <div className={cn("w-full ", className)}>
       <div className="flex items-center py-4">
         {searchKey && (
           <Input
@@ -209,10 +209,14 @@ export function TableView({
         </ScrollArea>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
-        {isSelectable && (
+        {isSelectable ? (
           <div className="flex-1 text-sm text-muted-foreground">
             {table.getFilteredSelectedRowModel().rows.length} of{" "}
             {table.getFilteredRowModel().rows.length} row(s) selected.
+          </div>
+        ) : (
+          <div className="flex-1 text-sm text-muted-foreground">
+            Total {table.getFilteredRowModel().rows.length} row(s).
           </div>
         )}
         <div className="space-x-2">

@@ -62,7 +62,7 @@ export default function AssertList({ control, onSubmit }) {
     );
   }
   return (
-    <div className="flex flex-col h-full relative">
+    <div className="flex flex-col max-h-full relative">
       <div className="flex-none">
         <h4>Assets ($)</h4>
         <Dialog>
@@ -81,7 +81,7 @@ export default function AssertList({ control, onSubmit }) {
         </Dialog>
       </div>
       <TableView
-        className="flex-grow h-full"
+        className="flex-1 flex flex-col max-h-full"
         columnKeys={columnKeys}
         data={fields}
         searchKey="asset_name"
