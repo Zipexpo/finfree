@@ -19,10 +19,11 @@ import useStepStore from "@/store/useStepStore";
 import { AssetListSchema } from "@/lib/schema";
 
 import { ScrollArea } from "./ui/scroll-area";
-import AssertList from "./AssertList";
+import AssetList from "./AssetList";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 
 const defaultValues = {
-  assert: [],
+  asset: [],
   liability: [],
 };
 
@@ -50,23 +51,45 @@ export default function BalanceForm({
     <Card className="w-full flex flex-col h-full">
       <CardHeader>
         <CardTitle>Balance Sheet</CardTitle>
-        <CardDescription>List your assert and liabiliies.</CardDescription>
+        <CardDescription>List your asset and liabiliies.</CardDescription>
       </CardHeader>
-      <CardContent className="h-full relative flex-1">
+      <CardContent className="hidden md:block h-full relative flex-grow overflow-auto">
         <ResizablePanelGroup direction="horizontal">
-          <ResizablePanel className="px-2 py-2" defaultSize={50}>
-            <AssertList
+          <ResizablePanel className="px-2 pl-2 pr-4" defaultSize={50}>
+            <AssetList
+              mainKey="asset"
               control={formAsset.control}
-              register={formAsset.register}
               onSubmit={onSubmitAsset}
             />
           </ResizablePanel>
           <ResizableHandle withHandle />
-          <ResizablePanel className="px-2 py-2" defaultSize={50}>
+          <ResizablePanel className="px-2 pl-4 pr-2" defaultSize={50}>
             <h4>Liabiliies ($)</h4>
             <ScrollArea className="h-full"></ScrollArea>
           </ResizablePanel>
         </ResizablePanelGroup>
+      </CardContent>
+      <CardContent className="md:hidden block h-full relative flex-grow overflow-auto">
+        <Tabs
+          defaultValue="asset"
+          className="flex flex-col h-full overflow-hidden"
+        >
+          <TabsList>
+            <TabsTrigger value="asset">Assets</TabsTrigger>
+            <TabsTrigger value="liability">Liabilities</TabsTrigger>
+          </TabsList>
+          <TabsContent value="asset" className="flex-grow overflow-auto">
+            <AssetList
+              control={formAsset.control}
+              register={formAsset.register}
+              onSubmit={onSubmitAsset}
+            />
+          </TabsContent>
+          <TabsContent
+            value="liability"
+            className="flex-grow overflow-auto"
+          ></TabsContent>
+        </Tabs>
       </CardContent>
     </Card>
   );

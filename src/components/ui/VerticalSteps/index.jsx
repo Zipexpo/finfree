@@ -57,7 +57,9 @@ const VerticalSteps = ({ children }) => {
           ))}
         </ul>
       </div>
-      <div className="w-full p-4 flex-1">{childrenWithProps}</div>
+      <div className="w-full p-4 flex-grow overflow-auto">
+        {childrenWithProps}
+      </div>
     </div>
   );
 };

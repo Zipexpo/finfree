@@ -1,7 +1,7 @@
 "use client";
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
 import { Button } from "../button";
-import { cn } from "@/lib/utils";
+import { cn, formatMoney } from "@/lib/utils";
 export function generateHeader({
   key,
   label,
@@ -29,10 +29,7 @@ export function generateHeader({
         const amount = parseFloat(row.getValue(key));
 
         // Format the amount as a dollar amount
-        const formatted = new Intl.NumberFormat("en-US", {
-          style: "currency",
-          currency: "USD",
-        }).format(amount);
+        const formatted = formatMoney.format(amount);
 
         return (
           <div className={cn("text-right font-medium-right", headerClassName)}>

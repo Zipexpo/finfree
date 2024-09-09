@@ -26,52 +26,13 @@ import { AssetSchema } from "@/lib/schema";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 
-const predefinedAsset = [
-  {
-    heading: "Liquid Investments",
-    member: [
-      { label: "Cashier", value: "cashier" },
-      { label: "Shares", value: "shares" },
-      { label: "Equity Fund", value: "equity fund" },
-      { label: "Pension Fund", value: "pension fund" },
-      { label: "Derivatives", value: "derivatives" },
-      { label: "Precious Metals", value: "precious metals" },
-    ],
-  },
-  {
-    heading: "Real Estate",
-    member: [
-      { label: "Owner-occupied property", value: "owner-occupied property" },
-      {
-        label: "Rented residential properties",
-        value: "rented residential properties",
-      },
-      {
-        label: "Rented commercial properties",
-        value: "rented commercial properties",
-      },
-      { label: "Undeveloped lots", value: "undeveloped lots" },
-      { label: "Closed real estate funds", value: "closed real estate funds" },
-      { label: "Open real estate funds", value: "open real estate funds" },
-    ],
-  },
-  {
-    heading: "Corporate Holdings",
-    member: [
-      { label: "Active participations", value: "active participations" },
-      {
-        label: "Not active participations",
-        value: "not active participations",
-      },
-    ],
-  },
-];
-export default function AssertSingle({
+export default function AssetSingle({
   title,
   description,
   hint,
   onSubmit,
   formData,
+  predefinedAsset,
 }) {
   const form = useForm({
     resolver: zodResolver(AssetSchema),

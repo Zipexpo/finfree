@@ -18,13 +18,11 @@ export default function RootLayout({ children }) {
       <body
         className={cn(
           inter.className,
-          "flex min-h-screen w-full flex-col bg-muted/40"
+          "flex h-screen w-full flex-col bg-muted/40"
         )}
       >
         <Header />
-        <div className="py-3 h-[calc(100vh_-_3.5rem)] relative overflow-auto">
-          {children}
-        </div>
+        <div className="py-3 flex-grow relative overflow-auto">{children}</div>
         <Toaster />
       </body>
     </html>

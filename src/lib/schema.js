@@ -47,8 +47,8 @@ export const AssetSchema = _AssetSchema.required({
   asset_amount: true,
 });
 export const AssetListSchema = z.object({
-  assert: z.array(AssetSchema),
-  assertTotal: z.coerce.number(),
+  asset: z.array(AssetSchema),
+  assetTotal: z.coerce.number(),
   liability: z.array(AssetSchema),
   liabilityTotal: z.coerce.number(),
 });
@@ -68,3 +68,56 @@ export const LifeSchema = _LifeSchema.required({
   to: true,
 });
 export const LifeListSchema = z.array(LifeSchema);
+
+export const predefinedAsset = [
+  {
+    heading: "Liquid Investments",
+    member: [
+      { label: "Cashier", value: "cashier" },
+      { label: "Shares", value: "shares" },
+      { label: "Equity Fund", value: "equity fund" },
+      { label: "Pension Fund", value: "pension fund" },
+      { label: "Derivatives", value: "derivatives" },
+      { label: "Precious Metals", value: "precious metals" },
+    ],
+  },
+  {
+    heading: "Real Estate",
+    member: [
+      { label: "Owner-occupied property", value: "owner-occupied property" },
+      {
+        label: "Rented residential properties",
+        value: "rented residential properties",
+      },
+      {
+        label: "Rented commercial properties",
+        value: "rented commercial properties",
+      },
+      { label: "Undeveloped lots", value: "undeveloped lots" },
+      { label: "Closed real estate funds", value: "closed real estate funds" },
+      { label: "Open real estate funds", value: "open real estate funds" },
+    ],
+  },
+  {
+    heading: "Corporate Holdings",
+    member: [
+      { label: "Active participations", value: "active participations" },
+      {
+        label: "Not active participations",
+        value: "not active participations",
+      },
+    ],
+  },
+];
+
+const _predefinedAssetMap = {};
+predefinedAsset.forEach((d) => {
+  d.member.forEach((e) => (_predefinedAssetMap[e.value] = d.heading));
+});
+export const predefinedAssetMap = _predefinedAssetMap;
+export const predefinedAssetObject = {
+  "Liquid Investments": "Liquid assets",
+  "Real Estate": "Real Estate",
+  "Corporate Holdings": "Corporate Participations",
+  Other: "Other assets",
+};
