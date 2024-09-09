@@ -16,11 +16,6 @@ import { BalancePieChart } from "./ui/BalancePieChart";
 import { useMemo, useState } from "react";
 import { sumBy } from "lodash";
 import { colorScheme, formatMoney } from "@/lib/utils";
-import {
-  predefinedAsset,
-  predefinedAssetMap,
-  predefinedAssetObject,
-} from "@/lib/schema";
 
 const columnKeys = [
   generateHeader({
@@ -40,7 +35,12 @@ const columnKeys = [
     isMoney: true,
   }),
 ];
-export default function AssetList({ mainKey, control, onSubmit }) {
+export default function AssetList({
+  mainKey,
+  control,
+  predefinedSchema,
+  onSubmit,
+}) {
   const { fields, append, remove, update } = useFieldArray({
     control,
     name: mainKey,
@@ -93,11 +93,12 @@ export default function AssetList({ mainKey, control, onSubmit }) {
 
   const vizData = useMemo(() => {
     const group = {};
-    Object.values(predefinedAssetObject).forEach((d) => (group[d] = 0));
+    Object.values(predefinedSchema?.catLabel ?? {}).forEach(
+      (d) => (group[d] = 0)
+    );
     let total = 0;
     fields.forEach((d) => {
-      const cat =
-        predefinedAssetObject[predefinedAssetMap[d.asset_category] ?? "Other"];
+      const cat = getCatAsset(d.asset_category);
       group[cat] += d.asset_amount;
       total += d.asset_amount;
     });
@@ -124,7 +125,7 @@ export default function AssetList({ mainKey, control, onSubmit }) {
           </DialogTrigger>
           <DialogContent>
             <AssetSingle
-              predefinedAsset={predefinedAsset}
+              predefinedAsset={predefinedSchema.list}
               title="Add new Asset"
               hint="Asset"
               onSubmit={onSubmitAsset}
@@ -155,7 +156,7 @@ export default function AssetList({ mainKey, control, onSubmit }) {
       >
         <DialogContent>
           <AssetSingle
-            predefinedAsset={predefinedAsset}
+            predefinedAsset={predefinedSchema.list}
             title="Edit Asset"
             hint="Asset"
             onSubmit={onEditAsset}

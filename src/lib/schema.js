@@ -110,14 +110,21 @@ export const predefinedAsset = [
   },
 ];
 
-const _predefinedAssetMap = {};
+const predefinedAssetMap = {};
 predefinedAsset.forEach((d) => {
   d.member.forEach((e) => (_predefinedAssetMap[e.value] = d.heading));
 });
-export const predefinedAssetMap = _predefinedAssetMap;
-export const predefinedAssetObject = {
-  "Liquid Investments": "Liquid assets",
-  "Real Estate": "Real Estate",
-  "Corporate Holdings": "Corporate Participations",
-  Other: "Other assets",
+export const predefinedAssetSchema = {
+  key: Asset,
+  list: predefinedAsset,
+  lookup: predefinedAssetMap,
+  catLabel: {
+    "Liquid Investments": "Liquid assets",
+    "Real Estate": "Real Estate",
+    "Corporate Holdings": "Corporate Participations",
+    Other: "Other assets",
+  },
+  getCatAsset: function (key) {
+    return this.catLabel[this.lookup[key] ?? "Other"];
+  },
 };

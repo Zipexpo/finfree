@@ -16,7 +16,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import useStepStore from "@/store/useStepStore";
-import { AssetListSchema } from "@/lib/schema";
+import { AssetListSchema, predefinedAssetSchema } from "@/lib/schema";
 
 import { ScrollArea } from "./ui/scroll-area";
 import AssetList from "./AssetList";
@@ -58,6 +58,7 @@ export default function BalanceForm({
           <ResizablePanel className="px-2 pl-2 pr-4" defaultSize={50}>
             <AssetList
               mainKey="asset"
+              predefinedSchema={predefinedAssetSchema}
               control={formAsset.control}
               onSubmit={onSubmitAsset}
             />
