@@ -36,6 +36,7 @@ const columnKeys = [
   }),
 ];
 export default function AssetList({
+  title,
   mainKey,
   control,
   predefinedSchema,
@@ -98,7 +99,7 @@ export default function AssetList({
     );
     let total = 0;
     fields.forEach((d) => {
-      const cat = getCatAsset(d.asset_category);
+      const cat = predefinedSchema.getCatAsset(d.asset_category);
       group[cat] += d.asset_amount;
       total += d.asset_amount;
     });
@@ -116,7 +117,7 @@ export default function AssetList({
   return (
     <div className="flex flex-col h-full relative">
       <div className="flex-none flex justify-between">
-        <h4>Assets ({formatMoney.format(vizData.total)})</h4>
+        <h4>{title} ({formatMoney.format(vizData.total)})</h4>
         <Dialog>
           <DialogTrigger asChild>
             <Button className="px-2 py-1 text-sm">
@@ -125,9 +126,10 @@ export default function AssetList({
           </DialogTrigger>
           <DialogContent>
             <AssetSingle
-              predefinedAsset={predefinedSchema.list}
+              predefinedAsset={predefinedSchema?.list}
               title="Add new Asset"
               hint="Asset"
+              formData={predefinedSchema?.default}
               onSubmit={onSubmitAsset}
             />
           </DialogContent>
@@ -156,9 +158,9 @@ export default function AssetList({
       >
         <DialogContent>
           <AssetSingle
-            predefinedAsset={predefinedSchema.list}
-            title="Edit Asset"
-            hint="Asset"
+            predefinedAsset={predefinedSchema?.list}
+            title={`Edit ${predefinedSchema?.key}`}
+            hint={predefinedSchema?.key}
             onSubmit={onEditAsset}
             formData={isDialogOpen.data}
           />

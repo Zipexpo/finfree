@@ -69,6 +69,53 @@ export const LifeSchema = _LifeSchema.required({
 });
 export const LifeListSchema = z.array(LifeSchema);
 
+export const predefinedLiability = [
+  {
+    heading: "Liabilities",
+    member: [
+      { label: "Object-related liabilities", value: "Object-related liabilities" },
+      { label: "Non-property-related liabilities", value: "Non-property-related liabilities" },
+    ],
+  },
+  {
+    heading: "Provisions",
+    member: [
+      { label: "Provisions", value: "Provisions" }
+    ],
+  },
+  {
+    heading: "Reserved Equity",
+    member: [
+      { label: "Reserved equity for consumption", value: "Reserved equity for consumption" },
+      {
+        label: "Reserved equity capital for pension provision",
+        value: "Reserved equity capital for pension provision",
+      },
+    ],
+  },
+];
+
+const predefinedLiabilityMap = {};
+predefinedLiability.forEach((d) => {
+  d.member.forEach((e) => (predefinedLiabilityMap[e.value] = d.heading));
+});
+export const predefinedLiabilitySchema = {
+  key: "Liability",
+  list: predefinedLiability,
+  lookup: predefinedLiabilityMap,
+  catLabel: {
+    "Liabilities": "Liabilities",
+    "Provisions": "Provisions",
+    "Reserved Equity": "Reserved Equity",
+    Other: "Free equity",
+  },
+  getCatAsset: function (key) {
+    return this.catLabel[this.lookup[key] ?? "Other"];
+  },
+  default: { isLiquid: false,isNegative: true }
+};
+
+
 export const predefinedAsset = [
   {
     heading: "Liquid Investments",
@@ -127,4 +174,5 @@ export const predefinedAssetSchema = {
   getCatAsset: function (key) {
     return this.catLabel[this.lookup[key] ?? "Other"];
   },
+  default: { isLiquid: false }
 };

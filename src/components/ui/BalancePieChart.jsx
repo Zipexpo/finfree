@@ -44,10 +44,7 @@ const chartConfig = {
     color: "hsl(var(--chart-5))",
   },
 };
-// Custom label render function
-const renderCustomLabel = ({ name, value }) => {
-  return `${name}: ${value}`; // Customize the label here
-};
+
 export function BalancePieChart({
   title,
   subtitle,
@@ -62,6 +59,10 @@ export function BalancePieChart({
   const totalVisitors = React.useMemo(() => {
     return data.reduce((acc, curr) => acc + curr[dataKey], 0);
   }, [data]);
+  // Custom label render function
+  const renderCustomLabel = React.useCallback(({ name, value }) => {
+    return `${name}: ${Math.round(value*1000/totalVisitors)/10}%`; // Customize the label here
+  },[totalVisitors]);
   return (
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">
