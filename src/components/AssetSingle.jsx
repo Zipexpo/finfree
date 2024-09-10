@@ -105,9 +105,12 @@ export default function AssetSingle({
             )}
           />
           <DialogFooter className="sm:justify-start pt-5">
+            <Button type="submit" className="btn btn-primary">
+              Submit
+            </Button>
             <DialogClose asChild>
-              <Button type="submit" className="w-full">
-                Add
+              <Button type="button" className="btn btn-secondary">
+                Cancel
               </Button>
             </DialogClose>
           </DialogFooter>

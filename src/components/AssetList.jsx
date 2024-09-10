@@ -51,12 +51,15 @@ export default function AssetList({
     index: -1,
     open: false,
   });
+  const [isDialogAddOpen, setIsDialogAddOpen] = useState(false);
   function onSubmitAsset(data) {
     append(data);
+    setIsDialogAddOpen(false);
   }
   function onEditAsset(data) {
     if (isDialogOpen.index !== -1) {
       update(isDialogOpen.index, data);
+      setIsDialogOpen({ ...isDialogOpen, open: false });
     }
   }
   function actionComp({ row }) {
@@ -117,8 +120,13 @@ export default function AssetList({
   return (
     <div className="flex flex-col h-full relative">
       <div className="flex-none flex justify-between">
-        <h4>{title} ({formatMoney.format(vizData.total)})</h4>
-        <Dialog>
+        <h4>
+          {title} ({formatMoney.format(vizData.total)})
+        </h4>
+        <Dialog
+          open={isDialogAddOpen}
+          onOpenChange={(state) => setIsDialogAddOpen(state)}
+        >
           <DialogTrigger asChild>
             <Button className="px-2 py-1 text-sm">
               <Plus className="mr-2 h-4 w-4" /> Add

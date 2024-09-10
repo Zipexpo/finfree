@@ -46,12 +46,12 @@ export const AssetSchema = _AssetSchema.required({
   asset_name: true,
   asset_amount: true,
 });
-export const AssetListSchema = z.object({
-  asset: z.array(AssetSchema),
-  assetTotal: z.coerce.number(),
-  liability: z.array(AssetSchema),
-  liabilityTotal: z.coerce.number(),
-});
+export const AssetListSchema = z
+  .object({
+    asset: z.array(AssetSchema),
+    liability: z.array(AssetSchema),
+  })
+  .partial();
 
 export const _LifeSchema = z.object({
   name: z.string().min(1, "Required"),
@@ -73,20 +73,27 @@ export const predefinedLiability = [
   {
     heading: "Liabilities",
     member: [
-      { label: "Object-related liabilities", value: "Object-related liabilities" },
-      { label: "Non-property-related liabilities", value: "Non-property-related liabilities" },
+      {
+        label: "Object-related liabilities",
+        value: "Object-related liabilities",
+      },
+      {
+        label: "Non-property-related liabilities",
+        value: "Non-property-related liabilities",
+      },
     ],
   },
   {
     heading: "Provisions",
-    member: [
-      { label: "Provisions", value: "Provisions" }
-    ],
+    member: [{ label: "Provisions", value: "Provisions" }],
   },
   {
     heading: "Reserved Equity",
     member: [
-      { label: "Reserved equity for consumption", value: "Reserved equity for consumption" },
+      {
+        label: "Reserved equity for consumption",
+        value: "Reserved equity for consumption",
+      },
       {
         label: "Reserved equity capital for pension provision",
         value: "Reserved equity capital for pension provision",
@@ -104,17 +111,16 @@ export const predefinedLiabilitySchema = {
   list: predefinedLiability,
   lookup: predefinedLiabilityMap,
   catLabel: {
-    "Liabilities": "Liabilities",
-    "Provisions": "Provisions",
+    Liabilities: "Liabilities",
+    Provisions: "Provisions",
     "Reserved Equity": "Reserved Equity",
     Other: "Free equity",
   },
   getCatAsset: function (key) {
     return this.catLabel[this.lookup[key] ?? "Other"];
   },
-  default: { isLiquid: false,isNegative: true }
+  default: { isLiquid: false, isNegative: true },
 };
-
 
 export const predefinedAsset = [
   {
@@ -174,5 +180,5 @@ export const predefinedAssetSchema = {
   getCatAsset: function (key) {
     return this.catLabel[this.lookup[key] ?? "Other"];
   },
-  default: { isLiquid: false }
+  default: { isLiquid: false },
 };
