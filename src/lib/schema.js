@@ -115,7 +115,7 @@ predefinedAsset.forEach((d) => {
   d.member.forEach((e) => (predefinedAssetMap[e.value] = d.heading));
 });
 export const predefinedAssetSchema = {
-  key: Asset,
+  key: "Asset",
   list: predefinedAsset,
   lookup: predefinedAssetMap,
   catLabel: {
