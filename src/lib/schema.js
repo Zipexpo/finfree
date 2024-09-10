@@ -112,7 +112,7 @@ export const predefinedAsset = [
 
 const predefinedAssetMap = {};
 predefinedAsset.forEach((d) => {
-  d.member.forEach((e) => (_predefinedAssetMap[e.value] = d.heading));
+  d.member.forEach((e) => (predefinedAssetMap[e.value] = d.heading));
 });
 export const predefinedAssetSchema = {
   key: Asset,
