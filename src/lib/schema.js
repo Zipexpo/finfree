@@ -53,21 +53,23 @@ export const AssetListSchema = z
   })
   .partial();
 
-export const _LifeSchema = z.object({
-  name: z.string().min(1, "Required"),
-  category: z.string(),
-  amount: z.coerce.number().positive(),
-  from: z.coerce.number().int().positive(),
-  to: z.coerce.number().int().positive(),
-  isNegative: z.boolean(),
-});
+export const _LifeSchema = z
+  .object({
+    name: z.string().min(1, "Required"),
+    category: z.string(),
+    amount: z.coerce.number().positive(),
+    from: z.coerce.number().int().positive(),
+    to: z.coerce.number().int().positive(),
+    isNegative: z.boolean(),
+  })
+  .partial();
 export const LifeSchema = _LifeSchema.required({
   name: true,
   amount: true,
   from: true,
   to: true,
 });
-export const LifeListSchema = z.array(LifeSchema);
+export const LifeListSchema = z.object({ stages: z.array(LifeSchema) });
 
 export const predefinedLiability = [
   {

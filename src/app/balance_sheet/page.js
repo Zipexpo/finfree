@@ -1,4 +1,5 @@
 import BalanceForm from "@/components/BalanceForm";
+import LifeEvent from "@/components/LifeEvent";
 import PersonalInfo from "@/components/PersonalInfo";
 import VerticalSteps from "@/components/ui/VerticalSteps";
 
@@ -8,7 +9,7 @@ export default function BalanceSheet() {
       <VerticalSteps>
         <PersonalInfo />
         <BalanceForm />
-        <div>3</div>
+        <LifeEvent />
       </VerticalSteps>
     </div>
   );

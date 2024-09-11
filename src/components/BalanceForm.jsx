@@ -26,18 +26,14 @@ import { ScrollArea } from "./ui/scroll-area";
 import AssetList from "./AssetList";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { Form } from "./ui/form";
+import { SaveIcon } from "lucide-react";
 
 const defaultValues = {
   asset: [],
   liability: [],
 };
 
-export default function BalanceForm({
-  prevStep,
-  nextStep,
-  backable,
-  nextable,
-}) {
+export default function BalanceForm({ prevStep, nextStep }) {
   const { setFormDatas, formData } = useStepStore((state) => ({
     setFormDatas: state.setFormDatas,
     formData: state.formData[1] || defaultValues,
@@ -47,16 +43,31 @@ export default function BalanceForm({
     defaultValues: formData,
   });
 
-  function onSubmitAsset(data) {
+  function onSubmitAsset(data, event) {
+    const clickedButton = event.nativeEvent.submitter.name; // Get the name of the button
     debugger;
-    console.log(data);
-    // setFormDatas(1, data);
-    // nextStep();
+    switch (clickedButton) {
+      case "next":
+        setFormDatas(1, data);
+        nextStep();
+        break;
+      case "back":
+        setFormDatas(1, data);
+        prevStep();
+      default:
+        setFormDatas(1, data);
+        break;
+    }
   }
   return (
     <Card className="w-full flex flex-col h-full">
       <CardHeader>
-        <CardTitle>Balance Sheet</CardTitle>
+        <CardTitle className="flex justify-between">
+          Balance Sheet
+          <Button type="submit" name="save">
+            <SaveIcon className="mr-2 h-4 w-4" /> Save
+          </Button>
+        </CardTitle>
         <CardDescription>List your asset and liabiliies.</CardDescription>
       </CardHeader>
 
@@ -118,10 +129,12 @@ export default function BalanceForm({
         </CardContent>
         <CardFooter className="grid gap-x-2 gap-y-1 grid-cols-4">
           <div className="col-span-2 grid grid-cols-subgrid">
-            <Button>Back</Button>
+            <Button type="submit" name="back">
+              Back
+            </Button>
           </div>
           <div className="col-span-2 grid grid-cols-subgrid">
-            <Button type="submit" className="col-start-2">
+            <Button type="submit" className="col-start-2" name="next">
               Next
             </Button>
           </div>
