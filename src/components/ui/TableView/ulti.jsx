@@ -27,13 +27,14 @@ export function generateHeader({
   const cell = isMoney
     ? ({ row }) => {
         const amount = parseFloat(row.getValue(key));
+        const isNegative = row.getValue('isNegative')??false;
 
         // Format the amount as a dollar amount
         const formatted = formatMoney.format(amount);
 
         return (
           <div className={cn("text-right font-medium-right", headerClassName)}>
-            {formatted}
+            {isNegative?'-':''}{formatted}
           </div>
         );
       }
