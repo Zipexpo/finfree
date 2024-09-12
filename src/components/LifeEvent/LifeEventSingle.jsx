@@ -32,7 +32,7 @@ import { Tabs,
     TabsContent,
     TabsList,
     TabsTrigger, } from "../ui/tabs";
-import { Banknote, CalendarCheck, CalendarRange } from "lucide-react";
+import { Banknote, CalendarCheck, CalendarRange, Store } from "lucide-react";
 
 export default function LifeEventSingle({
   title,
