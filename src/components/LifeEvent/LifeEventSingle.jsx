@@ -41,11 +41,11 @@ export default function LifeEventSingle({
 }) {
   const form = useForm({
     resolver: zodResolver(AssetSchema),
-    defaultValues: formData || { isLiquid: false },
+    defaultValues: formData || {},
   });
 
   const [isRange, setIsRange] = useState("one");
-  const [isNegative, setIsNegative] = useState(false);
+  const [isNegative, setIsNegative] = useState("false");
 
   return (
     <DialogContent>
@@ -151,10 +151,10 @@ export default function LifeEventSingle({
             className="col-span-4"
           >
             <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="one" className="gap-2">
+              <TabsTrigger value="false" className="gap-2">
                 <Banknote /> InCome
               </TabsTrigger>
-              <TabsTrigger value="long" className="gap-2">
+              <TabsTrigger value="true" className="gap-2">
                 <Store /> Expenses
               </TabsTrigger>
             </TabsList>
