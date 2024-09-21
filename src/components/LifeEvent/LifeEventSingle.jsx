@@ -23,10 +23,16 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Description } from "@radix-ui/react-dialog";
 import Comboboxfree from "@/components/ui/combofree";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AssetSchema } from "@/lib/schema";
+import {
+  LifeSchema,
+  predefinedIssues,
+  predefinedIssuesMap,
+  predefinedRevenue,
+  predefinedRevenueMap,
+} from "@/lib/schema";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Label } from "../ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { Banknote, CalendarCheck, CalendarRange, Store } from "lucide-react";
@@ -37,15 +43,54 @@ export default function LifeEventSingle({
   hint,
   onSubmit,
   formData,
-  predefinedAsset,
+  limit = [],
 }) {
   const form = useForm({
-    resolver: zodResolver(AssetSchema),
+    resolver: zodResolver(
+      LifeSchema.refine(
+        (data) => {
+          const { from } = data;
+          return from >= limit[0] && from <= limit[1];
+        },
+        {
+          message: `From must be between ${limit[0]} and ${limit[1]}`,
+          path: ["from"], // This is where the error will be placed
+        }
+      ).refine(
+        (data) => {
+          const { to } = data;
+          return to >= limit[0] && to <= limit[1];
+        },
+        {
+          message: `To must be bbetween ${limit[0]} and ${limit[1]}`,
+          path: ["to"], // This is where the error will be placed
+        }
+      )
+    ),
     defaultValues: formData || {},
   });
 
-  const [isRange, setIsRange] = useState("one");
-  const [isNegative, setIsNegative] = useState("false");
+  const [isRange, setIsRange] = useState(
+    form.getValues("from") === form.getValues("to") ? "one" : "long"
+  );
+  const [isNegative, setIsNegative] = useState(
+    form.getValues("isNegative") ? "true" : "false"
+  );
+
+  useEffect(() => {
+    const schema =
+      isNegative == "true" ? predefinedIssuesMap : predefinedRevenueMap;
+    Object.keys(schema.default).forEach((k) => {
+      form.setValue(k, schema.default[k]);
+    });
+    form.setValue("isNegative", isNegative === "true");
+  }, [form, isNegative]);
+  const fromVal = form.watch("from"); // Watch startYear field
+  useEffect(() => {
+    if (isRange === "one") {
+      form.setValue("to", fromVal);
+    }
+  }, [form, isRange, fromVal]);
 
   return (
     <DialogContent>
@@ -94,7 +139,7 @@ export default function LifeEventSingle({
                   name="from"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Event Year</FormLabel>
+                      <FormLabel>Event Year (age)</FormLabel>
                       <FormControl>
                         <Input type="number" {...field} />
                       </FormControl>
@@ -166,7 +211,14 @@ export default function LifeEventSingle({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Category</FormLabel>
-                  <Comboboxfree predefined={predefinedAsset} {...field} />
+                  <Comboboxfree
+                    predefined={
+                      isNegative === "true"
+                        ? predefinedIssues
+                        : predefinedRevenue
+                    }
+                    {...field}
+                  />
                   <FormMessage />
                 </FormItem>
               )}

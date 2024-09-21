@@ -34,6 +34,10 @@ const Comboboxfree = React.forwardRef(
       () => flatten(options.map((d) => d.member)),
       [options]
     );
+
+    React.useEffect(() => {
+      setOptions([...predefined]);
+    }, [predefined]);
     React.useEffect(() => {
       const value = (inputValue ?? "").trim();
       if (

@@ -71,6 +71,96 @@ export const LifeSchema = _LifeSchema.required({
 });
 export const LifeListSchema = z.object({ stages: z.array(LifeSchema) });
 
+export const InflationSchema = z.object({
+  inflation: z.coerce.number().min(0).max(100),
+});
+// Revenue
+export const predefinedRevenue = [
+  {
+    heading: "Revenue",
+    member: [
+      {
+        label: "Dependent",
+        value: "Dependent",
+      },
+      {
+        label: "Self-employed work",
+        value: "Self-employed work",
+      },
+      {
+        label: "Capital Assets",
+        value: "Capital Assets",
+      },
+      {
+        label: "Renting and leasing",
+        value: "Renting and leasing",
+      },
+      {
+        label: "Commercial enterprise",
+        value: "Commercial enterprise",
+      },
+      {
+        label: "Agriculture and forestry",
+        value: "Agriculture and forestry",
+      },
+    ],
+  },
+];
+
+export const predefinedRevenueMap = getPredefined(
+  predefinedRevenue,
+  "Revenue",
+  {
+    Revenue: "Revenue",
+    Other: "Other income",
+  },
+  {}
+);
+
+// Issues
+export const predefinedIssues = [
+  {
+    heading: "Issues",
+    member: [
+      {
+        label: "Taxes and duties",
+        value: "Taxes and duties",
+      },
+      {
+        label: "Social Security",
+        value: "Social Security",
+      },
+      {
+        label: "Consumption of daily life",
+        value: "Consumption of daily life",
+      },
+      {
+        label: "Insurance contributions",
+        value: "Insurance contributions",
+      },
+      {
+        label: "Maintenance payments",
+        value: "Maintenance payments",
+      },
+      {
+        label: "Interest and repayment",
+        value: "Interest and repayment",
+      },
+    ],
+  },
+];
+
+export const predefinedIssuesMap = getPredefined(
+  predefinedIssues,
+  "Issues",
+  {
+    Issues: "Issues",
+    Other: "Other expenses",
+  },
+  {}
+);
+
+// Liability
 export const predefinedLiability = [
   {
     heading: "Liabilities",
@@ -104,25 +194,17 @@ export const predefinedLiability = [
   },
 ];
 
-const predefinedLiabilityMap = {};
-predefinedLiability.forEach((d) => {
-  d.member.forEach((e) => (predefinedLiabilityMap[e.value] = d.heading));
-});
-export const predefinedLiabilitySchema = {
-  key: "Liability",
-  list: predefinedLiability,
-  lookup: predefinedLiabilityMap,
-  catLabel: {
+export const predefinedLiabilitySchema = getPredefined(
+  predefinedLiability,
+  "Liability",
+  {
     Liabilities: "Liabilities",
     Provisions: "Provisions",
     "Reserved Equity": "Reserved Equity",
     Other: "Free equity",
   },
-  getCatAsset: function (key) {
-    return this.catLabel[this.lookup[key] ?? "Other"];
-  },
-  default: { isLiquid: false, isNegative: true },
-};
+  { isLiquid: false, isNegative: true }
+);
 
 export const predefinedAsset = [
   {
@@ -165,22 +247,31 @@ export const predefinedAsset = [
   },
 ];
 
-const predefinedAssetMap = {};
-predefinedAsset.forEach((d) => {
-  d.member.forEach((e) => (predefinedAssetMap[e.value] = d.heading));
-});
-export const predefinedAssetSchema = {
-  key: "Asset",
-  list: predefinedAsset,
-  lookup: predefinedAssetMap,
-  catLabel: {
+export const predefinedAssetSchema = getPredefined(
+  predefinedAsset,
+  "Asset",
+  {
     "Liquid Investments": "Liquid assets",
     "Real Estate": "Real Estate",
     "Corporate Holdings": "Corporate Participations",
     Other: "Other assets",
   },
-  getCatAsset: function (key) {
-    return this.catLabel[this.lookup[key] ?? "Other"];
-  },
-  default: { isLiquid: false },
-};
+  { isLiquid: false }
+);
+
+function getPredefined(predefined, key, catLabel, defaultVal) {
+  const predefinedMap = {};
+  predefined.forEach((d) => {
+    d.member.forEach((e) => (predefinedMap[e.value] = d.heading));
+  });
+  return {
+    key,
+    list: predefined,
+    lookup: predefinedMap,
+    catLabel,
+    getCatAsset: function (key) {
+      return this.catLabel[this.lookup[key] ?? "Other"];
+    },
+    default: defaultVal,
+  };
+}

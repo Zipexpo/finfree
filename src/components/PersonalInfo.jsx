@@ -33,7 +33,7 @@ export default function PersonalInfo({
   backable,
   nextable,
 }) {
-  const { setFormDatas, formData } = useStepStore((state) => ({
+  const { setFormDatas, formData, s } = useStepStore((state) => ({
     setFormDatas: state.setFormDatas,
     formData: state.formData[0] || {},
   }));
@@ -51,6 +51,7 @@ export default function PersonalInfo({
   }, [yearOfBrith, form.setValue, form.trigger]);
 
   function onSubmit(data) {
+    debugger;
     setFormDatas(0, data);
     nextStep();
   }
