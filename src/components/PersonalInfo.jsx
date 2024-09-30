@@ -60,8 +60,8 @@ export default function PersonalInfo({
       <CardHeader>
         <CardTitle>Nice to meet you</CardTitle>
         <CardDescription>
-          Let's get to know each other. Your information will be use for the
-          next step
+          Let&apos;s get to know each other. Your information will be use for
+          the next step
         </CardDescription>
       </CardHeader>
       <CardContent>
