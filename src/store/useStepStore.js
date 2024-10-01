@@ -1,9 +1,19 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { z } from "zod";
-import { AssetListSchema, LifeListSchema, PersonalSchema } from "@/lib/schema";
+import {
+  AssetListSchema,
+  EmailSchema,
+  LifeListSchema,
+  PersonalSchema,
+} from "@/lib/schema";
 
-const formSchema = { 0: PersonalSchema, 1: AssetListSchema, 2: LifeListSchema };
+const formSchema = {
+  "-1": EmailSchema,
+  0: PersonalSchema,
+  1: AssetListSchema,
+  2: LifeListSchema,
+};
 const useStepStore = create(
   persist(
     (set, get) => ({

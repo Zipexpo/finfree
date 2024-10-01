@@ -1,5 +1,9 @@
 import { z } from "zod";
 
+export const EmailSchema = z.object({
+  email: z.string().email(),
+});
+
 export const _PersonalSchema = z.object({
   fullName: z.string().min(1, "First Name is required"),
   yearOfBrith: z.coerce
@@ -38,6 +42,7 @@ export const _AssetSchema = z
     asset_name: z.string().min(1, "Required"),
     asset_category: z.string(),
     asset_amount: z.coerce.number().positive(),
+    asset_interest: z.coerce.number().positive(),
     isLiquid: z.boolean(),
     isNegative: z.boolean(),
   })

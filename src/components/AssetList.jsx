@@ -34,6 +34,12 @@ const columnKeys = [
     isSotable: true,
     isMoney: true,
   }),
+  generateHeader({
+    key: "asset_interest",
+    label: "Interest",
+    isSotable: true,
+    isPercent: true,
+  }),
 ];
 export default function AssetList({
   title,

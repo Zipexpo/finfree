@@ -89,6 +89,19 @@ export default function AssetSingle({
           />
           <FormField
             control={form.control}
+            name="asset_interest"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Interest</FormLabel>
+                <FormControl>
+                  <Input subfix="%" type="number" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
             name="isLiquid"
             render={({ field }) => (
               <FormItem className="flex items-end gap-2">

@@ -7,6 +7,7 @@ export function generateHeader({
   label,
   headerClassName = "",
   cellClassName = "",
+  isPercent,
   isMoney,
   isSotable,
 }) {
@@ -35,6 +36,18 @@ export function generateHeader({
           <div className={cn("text-right font-medium-right", headerClassName)}>
             {isNegative ? "-" : ""}
             {formatted}
+          </div>
+        );
+      }
+    : isPercent
+    ? ({ row }) => {
+        const amount = parseFloat(row.getValue(key) ?? 0);
+        const isNegative = row.original["isNegative"] ?? false;
+
+        return (
+          <div className={cn("text-right font-medium-right", headerClassName)}>
+            {isNegative ? "-" : ""}
+            {amount}%
           </div>
         );
       }

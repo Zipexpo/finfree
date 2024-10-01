@@ -39,7 +39,7 @@ export default function SummaryReport() {
     resolver: zodResolver(InflationSchema),
     defaultValues: formData || {},
   });
-  const inflation = form.watch("inflation");
+  const inflation = form.watch("inflation") ?? 0;
   const vizData = useMemo(() => {
     const viz = [];
     for (let i = limit[0]; i <= limit[1]; i++) {
@@ -53,20 +53,14 @@ export default function SummaryReport() {
         viz[i - limit[0]][key] += d.amount;
       }
     });
-    let assertTotal = 0;
-    (allData[1]?.asset ?? []).forEach((d) => {
-      assertTotal += d.asset_amount;
-    });
-    let liabilityTotal = 0;
-    (allData[1]?.liability ?? []).forEach((d) => {
-      liabilityTotal += d.asset_amount;
-    });
-    let pre = assertTotal - liabilityTotal;
+
+    let starta = ali(allData[1], 0);
+    let pre = starta;
     for (let i = 0; i < viz.length; i++) {
       viz[i].free = viz[i].income - viz[i].issue;
       viz[i].r = pre + viz[i].free;
       viz[i]._w = (viz[i - 1]?.issue ?? 0) * Math.pow(1 + inflation / 100, i);
-      pre = viz[i].r;
+      pre = viz[i].r - starta + ali(allData[1], i + 1);
     }
     for (let i = viz.length - 2; i >= 0; i--) {
       viz[i].w = (viz[i + 1]?._w ?? 0) + (viz[i + 1]?.w ?? 0);
@@ -143,4 +137,18 @@ export default function SummaryReport() {
       </CardHeader>
     </Card>
   );
+}
+
+function sumBycat(data, i) {
+  let assertTotal = 0;
+  (data ?? []).forEach((d) => {
+    assertTotal += d.asset_amount * (1 + i * (d.asset_interest ?? 0));
+  });
+  return assertTotal;
+}
+
+function ali(allData, i) {
+  let assertTotal = sumBycat(allData?.asset, i);
+  let liabilityTotal = sumBycat(allData?.liability, i);
+  return assertTotal - liabilityTotal;
 }

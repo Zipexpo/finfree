@@ -1,9 +1,8 @@
-"use client"
- 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { Button } from "@/components/ui/button"
+"use client";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -12,28 +11,31 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { EmailSchema } from "@/lib/schema";
+import useStepStore from "@/store/useStepStore";
+import { useRouter } from "next/navigation";
 
- 
-const formSchema = z.object({
-  email: z.string().email(),
-})
- 
 export default function EmailInput() {
-  // 1. Define your form.
+  const router = useRouter();
+
+  const { setFormDatas, formData } = useStepStore((state) => ({
+    setFormDatas: state.setFormDatas,
+    formData: state.formData["-1"],
+  }));
+
   const form = useForm({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-        email: "",
-    },
-  })
- 
+    resolver: zodResolver(EmailSchema),
+    defaultValues: formData,
+  });
+
   // 2. Define a submit handler.
-  function onSubmit(values) {
+  function onSubmit(data) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values)
+    setFormDatas("-1", data);
+    router.push("/balance_sheet");
   }
   return (
     <Form {...form}>
@@ -57,5 +59,5 @@ export default function EmailInput() {
         />
       </form>
     </Form>
-  )
+  );
 }
