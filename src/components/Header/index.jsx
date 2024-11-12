@@ -7,8 +7,14 @@ export default function Header() {
         <Logo className="h-10 w-10" />
         <h3>Finfree</h3>
       </div>
-      <div className="self-end">
-        About us
+      <div className="self-end flex">
+        <div className="pl-2">
+          Dung Dinh Hai <Badge>VGU</Badge>
+        </div>
+        ,
+        <div className="pl-2">
+          Ngan V.T. Nguyen <Badge>VNU-HCMUS</Badge><Badge variant="sucess">dev</Badge>
+        </div>
       </div>
     </div>
   );
