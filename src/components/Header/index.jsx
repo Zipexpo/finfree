@@ -1,4 +1,5 @@
 import Logo from "../icons/Logo";
+import { Badge } from "../ui/badge";
 
 export default function Header() {
   return (
